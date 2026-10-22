@@ -1,0 +1,3 @@
+grpcio>=1.62
+protobuf>=5.26
+grpcio-tools>=1.62  # only needed to regenerate stubs (see Makefile)
