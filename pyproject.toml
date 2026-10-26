@@ -1,0 +1,13 @@
+[project]
+name = "bazooka-automation"
+version = "0.1.0"
+description = "Python automation framework for the Bazooka MUD client"
+requires-python = ">=3.9"
+dependencies = ["grpcio>=1.62", "protobuf>=5.26"]
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["automation"]
