@@ -46,14 +46,24 @@ Requires Go 1.24+ and Python 3.9+.
 # 1. backend (connects a session called "main" at startup)
 go run ./backend/cmd/bazooka-server -connect mud.example.org:4000
 
-# 2. TUI (another terminal). Esc/Ctrl+C quits, Up/Down = history, PgUp/PgDn = scroll
+# 2. Web interface (open in a browser)
+#    http://127.0.0.1:8080
+
+# 3. TUI (another terminal). Esc/Ctrl+C quits, Up/Down = history, PgUp/PgDn = scroll
 go run ./frontend/tui -session main
 #    or let the TUI create the session:  -connect mud.example.org:4000
 
-# 3. Python automation (another terminal)
+# 4. Python automation (another terminal)
 pip install -r requirements.txt
 python automation/examples/healer.py --session main
 ```
+
+The web interface is served by the backend and supports connecting to a MUD,
+selecting sessions, viewing live output, and sending commands. It listens on
+`127.0.0.1:8080` by default; change this with `-web-listen`. Keep it on
+loopback unless you put it behind an authenticated, encrypted proxy.
+ANSI SGR text colors and styles from MUD output are rendered in the browser,
+including standard, 256-color, and true-color sequences.
 
 Quitting the TUI does not disconnect from the MUD; the session keeps running
 in the backend and bots keep working. Reattaching replays recent scrollback.
