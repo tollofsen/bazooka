@@ -56,11 +56,11 @@ type model struct {
 	histPos  int
 }
 
-func newModel(client pb.BazookaClient, sessionID string, stream pb.Bazooka_StreamOutputClient, cancel context.CancelFunc) model {
+func newModel(client pb.BazookaClient, sessionID string, stream pb.Bazooka_StreamOutputClient, cancel context.CancelFunc) *model {
 	ti := textinput.New()
 	ti.Prompt = "> "
 	ti.Focus()
-	return model{client: client, sessionID: sessionID, stream: stream, cancel: cancel, input: ti}
+	return &model{client: client, sessionID: sessionID, stream: stream, cancel: cancel, input: ti}
 }
 
 // waitForOutput blocks on the stream and converts the next message to a tea.Msg.
@@ -86,7 +86,7 @@ func (m model) sendCommand(line string) tea.Cmd {
 	}
 }
 
-func (m model) Init() tea.Cmd {
+func (m *model) Init() tea.Cmd {
 	return tea.Batch(textinput.Blink, waitForOutput(m.stream))
 }
 
@@ -106,7 +106,7 @@ func (m *model) appendText(s string) {
 	}
 }
 
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
@@ -179,7 +179,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, tea.Batch(cmds...)
 }
 
-func (m model) View() string {
+func (m *model) View() string {
 	if !m.ready {
 		return "Starting..."
 	}
